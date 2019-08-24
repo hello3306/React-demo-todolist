@@ -1,8 +1,9 @@
 import React, { Component } from "react";
-import { Input, List, Button } from 'antd';
 import 'antd/dist/antd.css';
 import store from "../store/index";
-import { getInputChangeAction,getAddTodoItem,getDeleteTodoItem } from "../store/actionCreators"
+import { getInputChangeAction, getAddTodoItem, getDeleteTodoItem, initListAction } from "../store/actionCreators";
+import TodoListUI from './TodoListUI';
+import axios from "axios";
 
 
 class TodoList extends Component {
@@ -12,35 +13,37 @@ class TodoList extends Component {
         this.handleInputChange = this.handleInputChange.bind(this);
         this.handleButtonChange = this.handleButtonChange.bind(this);
         this.handleStoreChange = this.handleStoreChange.bind(this);
+        this.handleListItemChange = this.handleListItemChange.bind(this);
         store.subscribe(this.handleStoreChange)
+    }
+    componentDidMount() {
+        const data = ['44', '45', '46'];
+        const action = initListAction(data);
+        store.dispatch(action)
+
+        axios.get('/list.json').then(
+            (res) => {
+                const data = ['44', '45', '46'];
+                const action = initListAction(data);
+                store.dispatch(action)
+
+            }
+        ).catch(
+            (err) => {
+                console.log(err)
+            })
     }
 
     render() {
         return (
-            <div>
-                <div>
-                    <Input
-                        onChange={this.handleInputChange}
-                        value={this.state.inputValue}
-                        placeholder="請輸入內容"
-                        size="large"
-                        style={{ width: '300px', margin: "10px", }}>
-                    </Input>
-                    <Button type="primary" onClick={this.handleButtonChange}>提交</Button>
-                </div>
-
-                <List
-                    style={{ margin: "10px", width: '300px' }}
-                    bordered
-                    dataSource={this.state.list}
-                    renderItem={(item, index) => (
-                        <List.Item onClick={this.handleListItemChange.bind(this, index)}>
-                            {item}
-                        </List.Item>
-                    )}
-                />
-            </div>
-
+            <TodoListUI
+                inputValue={this.state.inputValue}
+                list={this.state.list}
+                handleInputChange={this.handleInputChange}
+                handleButtonChange={this.handleButtonChange}
+                handleStoreChange={this.handleStoreChange}
+                handleListItemChange={this.handleListItemChange}
+            />
         )
     }
 
