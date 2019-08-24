@@ -22,7 +22,7 @@ const TodoListUI=(props)=>{
                 bordered
                 dataSource={props.list}
                 renderItem={(item, index) => (
-                    <List.Item onClick={(index) => { props.handleListItemChange(index) }}>
+                    <List.Item onClick={() => { props.handleListItemChange(index) }}>
                         {item}
                     </List.Item>
                 )}
