@@ -1,9 +1,8 @@
 import React, { Component } from "react";
 import 'antd/dist/antd.css';
 import store from "../store/index";
-import { getTodoList,getInputChangeAction, getAddTodoItem, getDeleteTodoItem, initListAction } from "../store/actionCreators";
+import {getInitList, getInputChangeAction, getAddTodoItem, getDeleteTodoItem } from "../store/actionCreators";
 import TodoListUI from './TodoListUI';
-import axios from "axios";
 
 
 class TodoList extends Component {
@@ -17,7 +16,7 @@ class TodoList extends Component {
         store.subscribe(this.handleStoreChange)
     }
     componentDidMount() {
-        const action=getTodoList();
+        const action=getInitList()
         store.dispatch(action)
     }
 
